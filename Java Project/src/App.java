@@ -105,7 +105,7 @@ public class App {
     private static void displayTransactionDetails(Transaction transaction){
         System.out.println("Transaction Details: ");
         System.out.println("Date: " + transaction.getFormattedDate());
-        System.out.println("Type: " + transaction.getTransactionType());
+        System.out.println("Type: " + transaction.getType());
         System.out.println("Amount: " + transaction.getAmount() + "KD");
     }
 }
