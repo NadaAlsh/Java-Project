@@ -54,4 +54,11 @@ public class BankAccount {
         }
     }
 
+    public String getLastTransaction() {
+        if (transactionHistory != null && !transactionHistory.isEmpty()) {
+            return transactionHistory.get(transactionHistory.size() - 1);
+        }
+        return null;
+    }
+
 }
