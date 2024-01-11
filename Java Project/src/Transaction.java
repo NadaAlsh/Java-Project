@@ -1,32 +1,41 @@
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Transaction {
-    private LocalDateTime date;
-    private String transactionType;
-    private BankAccount amount;
 
-    public Transaction(int date, String transactionType, BankAccount amount) {
-        this.date = LocalDateTime.now();
+       private LocalDateTime date;
+       private String transactionType;
+       private double amount;
+    
+       // Constructors
+    public Transaction(LocalDateTime date, String transactionType, double amount) {
+        this.date = date;
         this.transactionType = transactionType;
         this.amount = amount;
     }
 
+    // getter and setter
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public String getTransactionType() {
         return transactionType;
     }
 
-    public BankAccount getAmount() {
-        return amount;
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 
-    public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd:mm:ss");
-        return date.format(formatter);
+     public double getAmount() {
+         return amount;
+     }
+     
+     public void setAmount(double amount) {
+         this.amount = amount;
+     }
     }
 
-}

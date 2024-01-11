@@ -1,111 +1,93 @@
-// import java.util.Scanner;
-// import java.io.Console;
-
-// public class App {
-//     public static void main(String[] args) throws Exception {
-// // Section BankAccount
-
-//         BankAccount razansAccount = new BankAccount(1234, 1000);
-        
-//         razansAccount.deposit(50);
-//         razansAccount.withdrawal(30);
-//         razansAccount.displayTransactionHistory();
-
-//         System.out.println("Current balance: " + razansAccount.getBalance() + " KD");
-//         System.out.println("Account number: " + razansAccount.getAccountNumber());
-
-// //-----------------------------------------------------------------------------
-
-// // Section User
-
-//         User user = new User("Razan", "Password123", razansAccount);
-//         Scanner scanner = new Scanner(System.in);
-
-
-//         user.getAccount().deposit(200.0);
-//         user.getAccount().withdrawal(50.5);
-//         user.getAccount().displayTransactionHistory();
-
-
-//         System.out.println("Current balance: " + user.getAccount().getBalance() + " KD");
-//         System.out.println("Account number: " + user.getAccount().getAccountNumber());
-
-//         user.changePassword("New Password");
-//         //String enteredPassword = promptForPassword();
-//         String newPassword = promptForPassword();
-
-//         user.changePassword(newPassword);
-
-//         scanner.close();
-
-//     } // end of MAIN
-//  //METHODS
-
-// //User Method 
-//     private static String promptForPassword() {
-//         Console console = System.console();
-//         if (console != null) {
-//             char[] passwordChars = console.readPassword("Enter your password: ");
-//             return new String(passwordChars);
-//         } else {
-//             Scanner scanner = new Scanner(System.in);
-//             System.out.println("Enter your password: ");
-//             return scanner.nextLine();
-//         }
-//     }
-
-// //--------------------------
-
-// }
-
-
-
-
-
 import java.util.Scanner;
-import java.time.format.DateTimeFormatter;
-import java.util.jar.Manifest;
 import java.io.Console;
+import java.time.LocalDateTime;
 
 public class App {
     public static void main(String[] args) throws Exception {
-
-        // Ojbject:
-        // Object for BankAccount
+        
+        // Bank account 
         BankAccount razansAccount = new BankAccount(1234, 1000);
-        // Object for User
-        User user = new User("Razan", "Password123", razansAccount);
+
+        // create user with bank account 
+        User user = new User("Razan","Razan123",razansAccount);
+
+
+        
+        
+        //ask user to enter username and password ( the password will be hidden while writing in output) 
         Scanner scanner = new Scanner(System.in);
-
-        razansAccount.deposit(50);
-        razansAccount.withdrawal(30);
-        razansAccount.displayTransactionHistory();
-
-        user.getAccount().deposit(200.0);
-        user.getAccount().withdrawal(50.5);
-
-        // display transaction and update user information 
-        displayTransactionDetails(user.getAccount().getLastTransaction());
-        displayUserInfo(user);
-
-        //close scanner
-        scanner.close();
-
+        Console console = System.console();
+        
+        System.out.println("Enter username: ");
+        String enterdUsername = scanner.nextLine();
+        
+        char[] enteredPasswordChars;
+        
+        if(console != null){
+            // use console for pass input
+            enteredPasswordChars = console.readPassword("Enter Password (For privacy reasons password will be hidden): ");
+        } else {
+            System.out.println("Enter password (For privacy reasons password will be hidden): ");
+            enteredPasswordChars = scanner.nextLine().toCharArray();
+        }
+        
+        String enteredPassword = new String(enteredPasswordChars);
+        
+        // System.out.println("Enter password: ");
+        // String enteredPassword = scanner.nextLine();
+        
+        // validating username and password
+        if(enterdUsername.equals(user.getUsername()) && enteredPassword.equals(user.getPassword())){
+            System.out.println("Login Successful!");
+            
+            
+            //Loop
+            char continueTransaction = 'Y';
+            do {
+                System.out.println("Choose an action: \n 1. Deposit \n 2. Withdrawal");
+                
+                int choice = scanner.nextInt();
+                
+                if(choice == 1){
+                    //deposit
+                    System.out.println("Enter Deposit Amount: ");
+                    double depositAmount = scanner.nextDouble();
+                    user.getAccount().deposit(depositAmount);
+                } else if (choice == 2) {
+                    //withdrawal
+                    System.out.print("Enter withdrawal amount: ");
+                    double withdrawalAmount = scanner.nextDouble();
+                    user.getAccount().withdrawal(withdrawalAmount);
+                } else {
+            System.out.println("Invalid choice. Please Enter 1 or 2.");
+            continue;
+        }
+        
+        System.out.println("Do you need any other transaction? Yes[Y] / No[N]");
+        continueTransaction = scanner.next().charAt(0);
+        
+    } while (continueTransaction == 'Y' || continueTransaction == 'y');
+    
+    // testing bank acc functionalities
+    System.out.println("New balance: " + user.getAccount().getBalance());
+    
+    //display transaction history
+    System.out.println("Transaction History: ");
+    for (String transaction : user.getAccount().getTransactionHistory()){
+        System.out.println(transaction);
     }
+    
+    
+    System.out.println("Goodbye! See you again.");
+} else {
+    System.out.println("Invalid username or password. Login failed.");
+}
 
-    // method to display user information 
-    private static void displayUserInfo(User user){
-        System.out.println("Transaction History for Account " + user.getAccount().getAccountNumber() + ":");
-        user.getAccount().displayTransactionHistory();
-        System.out.println("Current balance: " + user.getAccount().getBalance() + "KD");
-        System.out.println("Account number: " + user.getAccount().getAccountNumber());
-    }
 
-    // method to display transaction history
-    private static void displayTransactionDetails(Transaction transaction){
-        System.out.println("Transaction Details: ");
-        System.out.println("Date: " + transaction.getFormattedDate());
-        System.out.println("Type: " + transaction.getTransactionType());
-        System.out.println("Amount: " + transaction.getAmount() + "KD");
-    }
+
+
+scanner.close();
+}
+
+
 }
